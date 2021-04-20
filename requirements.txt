@@ -1,0 +1,7 @@
+z3-solver>=4.8.9.0
+typed-ast>=1.4.1
+tqdm>=4.54.1
+py2neo>=4.3.0
+docker>=4.4.0
+compare-string-version==0.1.0
+
