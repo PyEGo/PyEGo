@@ -1,11 +1,11 @@
 # PyEGo
 
 ## Description
-PyEGo: environment dependency inference for Python programs 
+PyEGo: Inferring Environment Dependencies for Python Programs
 ## Introduction
-PyEGo is a tool of automatically inferring runtime environment dependency for Python programs.<br/>
-A Python runtime environment dependency mainly consists of three parts:
-* Compatible Python version;
+PyEGo is a tool of automatically inferring environment dependencies for Python programs.<br/>
+A Python program's environment dependencies mainly consists of three parts:
+* Compatible Python interpreter version;
 * Dependent Python third-party packages;
 * Dependent System libraries.<br/>
 For example, the following snippet print emoji on the terminal:
@@ -33,7 +33,7 @@ ImportError: No module named emoji
 ```
 PyEGo can build a runtime environment for the snippet:
 ```$xslt
-$ python PyEGo.py --program_root="example/example.py"
+$ python PyEGo.py -r example/example.py
 ```
 And then, output a Dockerfile:
 ```dockerfile
@@ -79,7 +79,7 @@ $ bin/neo4j stop
 $ bin/neo4j-admin load --from=data/databases/PyKG.dump
 ```
 * Config PyEGo<br/>
-Edit config.py, config neo4j connection:
+Edit **config.py**, config neo4j connection:
 ```python
 NEO4J_URI = "YOUR NEO4J URI"
 NEO4J_PWD = "YOUR NEO4J PASSWORD"
@@ -105,7 +105,7 @@ $ python PyEGo.py [-h] [-t OUTPUT_TYPE] [-p OUTPUT_PATH] -r PROGRAM_ROOT
 ```
 * Program root can be either a single .py file or a Python project folder.<br/>
 * PyEGo provides two types of output: Dockerfile, and dependency.json. Default output type is Dockerfile.<br/>
-For a Dockerfile output, set --output_type==Dockerfile(-t Dockerfile), and for a json output, set --output_type==json.<br/>
+For a Dockerfile output, set --output_type=Dockerfile(-t Dockerfile), and for a json output, set --output_type=json.<br/>
 * --output_path(-p) indicate the output path of the Dockerfile or dependency.json. PyEGo generates the file in the parent folder of PROGRAM_ROOT by default.
 For more help, see:
 ```$xslt
@@ -115,16 +115,16 @@ $ python PyEGo.py -h
 ### Docker
 If you built Docker image of PyEGo, you can use PyEGo by:
 ```$xslt
-$ docker run -v /PATH/TO/PROGRAM/ROOT:/PATH/IN/CONTAINER \
+$ docker run -v /PATH/TO/PROGRAM/ROOT:/INPUT/IN/CONTAINER \
              -v /PATH/TO/OUTPUT:/OUTPUT/IN/CONTAINER \
-             ego /PATH/IN/CONTAINER /OUTPUT/IN/CONTAINER
+             ego /INPUT/IN/CONTAINER /OUTPUT/IN/CONTAINER
 ```
 
 ## Replay our experiment
 ### Experiment on Hard-gists
 Experimental results are available in another repository, [exp-gist](https://github.com/PyEGo/exp-gist).
 #### Run PyEGo on Hard-gists
-* Edit experiment/exp_config.py, config hard-gists root
+* Edit **experiment/exp_config.py**, config hard-gists root
 ```python
 EGO_GISTS_ROOT = "/YOUR/HARD/GISTS/ROOT/OF/PYEGO"
 ```
@@ -134,28 +134,28 @@ $ cd /PATH/TO/PYEGO
 $ python experiment/tests_gist.py --run
 ```
 #### Compare PyEGo results with DockerizeMe and Pipreqs
-* Run DockerizeMe and Pipreqs
+* Run DockerizeMe and Pipreqs<br/>
 We provide our experiment bash script of DockerizeMe and Pipreqs<br/>
-script/dockerizeme_gen_df.sh uses DockerizeMe to generate Dockerfiles for gists. Note that run the script in DockerizeMe vagrant(Provided by DockerizeMe)
+**script/dockerizeme_gen_df.sh** uses DockerizeMe to generate Dockerfiles for gists. Note that run the script in DockerizeMe vagrant(Provided by DockerizeMe)
 ```$xslt
 # Run the script in DockerizeMe vagrant
 # Edit line2: cd /YOUR/HARD/GISTS/ROOT/OF/DOCKERIZEME
 $ cd /PATH/TO/PyEGo/script
 $ bash dockerizeme_gen_df.sh
 ```
-script/pipreqs_gen_df.sh uses Pipreqs to generate requirements.txt and Dockerfiles for gists. Note that run the script after install pipreqs(pip install pipreqs) in Python2.7
+**script/pipreqs_gen_df.sh** uses Pipreqs to generate requirements.txt and Dockerfiles for gists. Note that run the script after install pipreqs(pip install pipreqs) in Python2.7
 ```$xslt
 # Edit line2 and line3: /YOUR/HARD/GISTS/ROOT/OF/PIPREQS
 $ cd /PATH/TO/PyEGo/script
 $ bash pipreqs_gen_df.sh
 ```
-script/dockerize_all.sh builds Docker images by DockerizeMe-generated or Pipreqs-generated Dockerfile, runs Docker containers, checks results and records results in log.txt.
+**script/dockerize_all.sh** builds Docker images by DockerizeMe-generated or Pipreqs-generated Dockerfile, runs Docker containers, checks results and records results in log.txt.
 ```$xslt
 # Edit line2: cd /YOUR/HARD/GISTS/ROOT
 $ cd /PATH/TO/PyEGo/script
 $ bash dockerize_all.sh
 ```
-* Edit experiment/exp_config.py, config hard-gists root and log path
+* Edit **experiment/exp_config.py**, config hard-gists root and log path
 ```python
 EGO_GISTS_ROOT = "/YOUR/HARD/GISTS/ROOT/OF/PYEGO"
 ME_GISTS_ROOT = "/YOUR/HARD/GISTS/ROOT/OF/DOCKERIZEME"
@@ -184,9 +184,9 @@ $ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/EGO
 $ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38
 $ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON39
 ```
-We need 3 copies of the dataset for our experiments. It's OK to use only one copy, but results would be over writen.
+We need 3 copies of the dataset for our experiments. It's OK to use only one copy, but results would be overwriten.
 #### Run PyEGo on Github dataset
-* Edit experiment/exp_config github dataset root
+* Edit **experiment/exp_config.py** github dataset root
 ```python
 EGO_GITHUB_ROOT = "/YOUR/GITHUB/DATASET/ROOT/OF/EGO"
 ```
@@ -199,7 +199,7 @@ $ python experiment/tests_github.py --run --tool=PyEGo
 #### Compare PyEGo results with DockerizeMe and Pipreqs
 * Run pipreqs<br/>
 Install pipreqs in Python3.6+
-Edit experiment/exp_config.py, config github dataset root and pipreqs path
+Edit **experiment/exp_config.py**, config github dataset root and pipreqs path
 ```python
 REQS_GITHUB_ROOT_38 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38"
 REQS_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON39"
@@ -214,8 +214,8 @@ Run pipreqs
 $ cd /PATH/TO/PYEGO
 $ python experiment/tests_github.py --run --tool=Pipreqs --pyver=<3.8 or 3.9>
 ```
-We provide results of DockerizeMe in another repository, exp-github.
-* Edit experiment/exp_config.py, config github dataset root and log path
+We provide results of DockerizeMe in [exp-github](https://github.com/PyEGo/exp-github).
+* Edit **experiment/exp_config.py**, config github dataset root and log path
 ```python
 EGO_GITHUB_ROOT = "/YOUR/GITHUB/DATASET/ROOT/OF/EGO"
 REQS_GITHUB_ROOT_38 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38"
@@ -236,7 +236,7 @@ $ cd /PATH/TO/PYEGO
 $ python experiment/tests_github.py --compare
 ```
 ### Experiment running PyEGo with different strategies
-Results of experiments are available in another repository, [exp-gist](https://github.com/PyEGo/exp-gist).
+Results of experiments are available in [exp-gist](https://github.com/PyEGo/exp-gist).
 * Here are our 2 strategies:<br/>
 
 |id|select strategy|
@@ -244,7 +244,7 @@ Results of experiments are available in another repository, [exp-gist](https://g
 |1(default)|select-one|
 |2|select-all|
 
-* Edit experiment/exp_config.py, config hard-gist root
+* Edit **experiment/exp_config.py**, config hard-gist root
 ```python
 EGO_GISTS_ROOT = "/YOUR/HARD/GIST/DATASET/ROOT/OF/PYEGO/STRATEGY1"
 EGO_GISTS_ROOT_2 ="/YOUR/HARD/GIST/DATASET/ROOT/OF/PYEGO/STRATEGY2"
