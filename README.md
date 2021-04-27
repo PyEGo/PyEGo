@@ -6,13 +6,6 @@ PyEGo: Inferring Environment Dependencies for Python Programs
 PyEGo is a tool of automatically inferring environment dependencies for Python programs.<br/>
 A Python program's environment dependencies mainly consists of three parts:
 * Compatible Python interpreter version;
-=======
-PyEGo: environment dependency inference for Python programs 
-## Introduction
-PyEGo is a tool of automatically inferring runtime environment dependency for Python programs.<br/>
-A Python runtime environment dependency mainly consists of three parts:
-* Compatible Python version;
->>>>>>> f8f69c1fd029e4bb8aa44dd4568dc5106fbbd27a
 * Dependent Python third-party packages;
 * Dependent System libraries.<br/>
 For example, the following snippet print emoji on the terminal:
