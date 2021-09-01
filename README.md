@@ -38,7 +38,6 @@ $ python PyEGo.py -r example/example.py
 And then, output a Dockerfile:
 ```dockerfile
 FROM python:2.7
-RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 RUN apt-get clean
 RUN apt-get update
 RUN pip install --upgrade pip
@@ -69,7 +68,7 @@ $ pip install -r requirements.txt
 * Merge PyKG:
 Our knowledge graph, PyKG, is split into 2 files because of file size limit, merge them before load it:
 ```$xslt
-$ cat PyKG/PyKG.dumpa* >> PyKG.dump
+$ cat PyKG/PyKG.dump.a* >> PyKG.dump
 ```
 * Load database(PyKG):
 ```$xslt
@@ -181,10 +180,9 @@ $ tar -xvf GithubProjects.tar.gz
 * Make copies for experiments:
 ```$xslt
 $ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/EGO
-$ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38
-$ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON39
+$ cp GithubProjects /YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS
 ```
-We need 3 copies of the dataset for our experiments. It's OK to use only one copy, but results would be overwriten.
+We need some copies of the dataset for our experiments. It's OK to use only one copy, but results would be overwriten.
 #### Run PyEGo on Github dataset
 * Edit **experiment/exp_config.py** github dataset root
 ```python
@@ -201,8 +199,7 @@ $ python experiment/tests_github.py --run --tool=PyEGo
 Install pipreqs in Python3.6+
 Edit **experiment/exp_config.py**, config github dataset root and pipreqs path
 ```python
-REQS_GITHUB_ROOT_38 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38"
-REQS_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON39"
+REQS_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS"
 PIPREQS_PATH = "/YOUR/PIPREQS/PATH"
 ```
 You can simply find pipreqs path by
@@ -212,22 +209,18 @@ $ which pipreqs
 Run pipreqs
 ```$xslt
 $ cd /PATH/TO/PYEGO
-$ python experiment/tests_github.py --run --tool=Pipreqs --pyver=<3.8 or 3.9>
+$ python experiment/tests_github.py --run --tool=Pipreqs
 ```
 We provide results of DockerizeMe in [exp-github](https://github.com/PyEGo/exp-github).
 * Edit **experiment/exp_config.py**, config github dataset root and log path
 ```python
 EGO_GITHUB_ROOT = "/YOUR/GITHUB/DATASET/ROOT/OF/EGO"
-REQS_GITHUB_ROOT_38 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON38"
-REQS_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS/PYTHON39"
-ME_GITHUB_ROOT_38 = "/YOUR/GITHUB/DATASET/ROOT/OF/DOCKERIZEME/PYTHON38"
-ME_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/DOCKERIZEME/PYTHON39"
+REQS_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/PIPREQS"
+ME_GITHUB_ROOT_39 = "/YOUR/GITHUB/DATASET/ROOT/OF/DOCKERIZEME"
 
 EGO_GITHUB_LOG = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/EGO"
-REQS_GITHUB_LOG_38 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/PIPREQS/PYTHON38"
-REQS_GITHUB_LOG_39 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/PIPREQS/PYTHON39"
-ME_GITHUB_LOG_38 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/DOCKERIZEME/PYTHON38"
-ME_GITHUB_LOG_39 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/DOCKERIZEME/PYTHON39"
+REQS_GITHUB_LOG_39 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/PIPREQS"
+ME_GITHUB_LOG_39 = "/YOUR/GITHUB/DATASET/LOG/PATH/OF/DOCKERIZEME"
 ```
 
 * Compare results

@@ -132,7 +132,7 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument('--run', action='store_true')
 group.add_argument('--compare', action='store_true')
 parser.add_argument('--tool', choices={"PyEGo", "Pipreqs"})
-parser.add_argument('--pyver', choices={"3.8", "3.9"}, default="3.8")
+parser.add_argument('--pyver', choices={"3.9"}, default="3.9")
 
 
 if __name__ == "__main__":
