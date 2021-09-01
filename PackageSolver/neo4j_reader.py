@@ -76,6 +76,56 @@ def get_pip_deps():
     return deps_dict
 
 
+def query(pkg, ver):
+    graph = get_graph()
+    cypher = f"MATCH (:PythonPackageVersion{{package: '{pkg}', version: '{ver}'}})-[:DependsOn]->(n:PythonPackageVersion) " \
+             "RETURN n"
+    result = graph.run(cypher)
+    data = result.data()
+    related = list()
+    for d in data:
+        node = d['n']
+        related.append(f"{node['package']}#{node['version']}")
+    return related
+
+
+def get_related_pkg_dict_no_cache(pkgvers):
+    pkg_dict = dict()
+    # init
+    queue = Queue()
+    for pkgmth in pkgvers:
+        pkg, method = pkgmth.split("#")
+        if method == "apt":
+            continue
+        vers = pkgvers[pkgmth]
+        for ver in vers:
+            pkgver = "{}#{}".format(pkg, ver)
+            queue.put(pkgver)
+
+    while queue.qsize() > 0:
+        pkgver = queue.get()
+        pkg, ver = pkgver.split("#")[:2]
+        if pkg == "python":
+            continue
+
+        if pkg not in pkg_dict:
+            pkg_dict[pkg] = dict()
+        if ver in pkg_dict[pkg]:
+            continue
+
+        pkg_dict[pkg][ver] = list()
+        try:
+            related = query(pkg, ver)
+        except KeyError:
+            continue
+
+        for dep_pkgver in related:
+            pkg_dict[pkg][ver].append(dep_pkgver)
+            queue.put(dep_pkgver)
+
+    return pkg_dict
+
+
 def get_related_pkg_dict(pkgvers):
     pkg_dict = dict()
     # init
@@ -159,5 +209,6 @@ if not pip_deps_dict:
     pip_deps_dict = get_pip_deps()
     write_object_to_file(config.PIP_DEPS_CACHE_PATH, pip_deps_dict)
     print("Dependencies cached.")
+
 
 

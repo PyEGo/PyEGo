@@ -17,8 +17,8 @@ sys.path.append(find_ego_root())
 from experiment.statistic_github import statistic_all
 from experiment.github_batch_test import batch_test
 from experiment.compare_result import count_ego_all, count_reqs_all, count_same_ego_reqs, count_same_ego_me
-from experiment.exp_config import EGO_GITHUB_ROOT, EGO_GITHUB_LOG, REQS_GITHUB_ROOT_38, ME_GITHUB_ROOT_38, \
-    REQS_GITHUB_ROOT_39, REQS_GITHUB_LOG_38, REQS_GITHUB_LOG_39, ME_GITHUB_ROOT_39, ME_GITHUB_LOG_39, ME_GITHUB_LOG_38
+from experiment.exp_config import EGO_GITHUB_ROOT, EGO_GITHUB_LOG, \
+    REQS_GITHUB_ROOT_39, REQS_GITHUB_LOG_39, ME_GITHUB_ROOT_39, ME_GITHUB_LOG_39
 from utils import read_object_from_file
 
 
@@ -41,12 +41,7 @@ def run_test_ego():
 
 def run_test_pipreqs(pyver="3.8"):
     # run pipreqs on github dataset, results are logged in log/github_test.<YYYYMMDD>.log
-    if pyver == "3.8":
-        root = REQS_GITHUB_ROOT_38
-    elif pyver == "3.9":
-        root = REQS_GITHUB_ROOT_39
-    else:
-        return
+    root = REQS_GITHUB_ROOT_39
     metadata_path = os.path.join(root, "metadata.json")
     metadata = read_object_from_file(metadata_path)
     batch_test(root, metadata, "pipreqs", False, pyver)
@@ -66,9 +61,9 @@ def test_time_ego():
 
 def test_time_pipreqs():
     # test time cost of pipreqs on github dataset
-    # time cost of pipreqs run on Python is 0.05s/item, however, those run on Bash is 2.57s/item
+    # cannot test here, because os.popen is async function
     start = datetime.now()
-    root = REQS_GITHUB_ROOT_38
+    root = REQS_GITHUB_ROOT_39
     metadata_path = os.path.join(root, "metadata.json")
     metadata = read_object_from_file(metadata_path)
     batch_test(root, metadata, "pipreqs", generate_only=True)
@@ -79,7 +74,7 @@ def test_time_pipreqs():
 
 def statistic_pkgs_ego():
     # statistic pkgs installed in PyEGo-generated Dockerfile
-    print("PyEGo:")
+    print("Statistic PyEGo-installed packages")
     ego_root = EGO_GITHUB_ROOT
     meta_path = os.path.join(ego_root, "metadata.json")
     metadata = read_object_from_file(meta_path)
@@ -87,7 +82,7 @@ def statistic_pkgs_ego():
 
 
 def statistic_pkgs_me():
-    print("DockerizeMe:")
+    print("Statistic DockerizeMe-installed packages")
     # statistic pkgs installed in DockerizeMe-generated Dockerfile
     me_root = ME_GITHUB_ROOT_39
     ego_root = EGO_GITHUB_ROOT
@@ -98,8 +93,8 @@ def statistic_pkgs_me():
 
 def statistic_pkgs_pipreqs():
     # statistic pkgs installed in pipreqs-generated requirements.txt
-    print("Pipreqs:")
-    reqs_root = REQS_GITHUB_ROOT_38
+    print("Statistic Pipreqs-installed packages")
+    reqs_root = REQS_GITHUB_ROOT_39
     count_reqs_all(reqs_root)
 
 
@@ -107,36 +102,26 @@ def compare_pkgs_ego_me():
     # statistic pkgs installed in projects which solved by both PyEGo and DockerizeMe
     # require execute logs of PyEGo and DockerizeMe
     # Results of DockerizeMe-3.8 and DockerizeMe-3.9 are the same
-    print("-----Compare with DockerizeMe-3.8-----")
+    print("Compare PyEGo with DockerizeMe")
     ego_root = EGO_GITHUB_ROOT
     ego_log = EGO_GITHUB_LOG
-    me_root = ME_GITHUB_ROOT_38
-    me_log = ME_GITHUB_LOG_38
-    meta_path = os.path.join(ego_root, "metadata.json")
-    metadata = read_object_from_file(meta_path)
-    count_same_ego_me(ego_root, ego_log, me_root, me_log, dataset="github", metadata=metadata)
-
-    print("-----Compare with DockerizeMe-3.9-----")
     me_root = ME_GITHUB_ROOT_39
     me_log = ME_GITHUB_LOG_39
+    meta_path = os.path.join(ego_root, "metadata.json")
+    metadata = read_object_from_file(meta_path)
     count_same_ego_me(ego_root, ego_log, me_root, me_log, dataset="github", metadata=metadata)
 
 
 def compare_pkgs_ego_pipreqs():
     # statistic pkgs installed in projects which solved by both PyEGo and pipreqs
     # require execute logs of PyEGo and pipreqs
-    print("-----Compare with Pipreqs-3.8-----")
+    print("Compare Pipreqs-3.9 with DockerizeMe")
     ego_root = EGO_GITHUB_ROOT
     ego_log = EGO_GITHUB_LOG
-    reqs_root = REQS_GITHUB_ROOT_38
-    reqs_log = REQS_GITHUB_LOG_38
-    meta_path = os.path.join(ego_root, "metadata.json")
-    metadata = read_object_from_file(meta_path)
-    count_same_ego_reqs(ego_root, ego_log, reqs_root, reqs_log, metadata=metadata)
-
-    print("-----Compare with Pipreqs-3.9-----")
     reqs_root = REQS_GITHUB_ROOT_39
     reqs_log = REQS_GITHUB_LOG_39
+    meta_path = os.path.join(ego_root, "metadata.json")
+    metadata = read_object_from_file(meta_path)
     count_same_ego_reqs(ego_root, ego_log, reqs_root, reqs_log, metadata=metadata)
 
 

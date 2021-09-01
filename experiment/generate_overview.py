@@ -3,7 +3,7 @@ import os
 
 from experiment.compare_result import TestResults
 from experiment.exp_config import EGO_GISTS_LOG, EGO_GISTS_LOG_2, EGO_GISTS_LOG_3, ME_GISTS_LOG, REQS_GISTS_LOG, \
-    EGO_GITHUB_LOG, ME_GITHUB_LOG_38, ME_GITHUB_LOG_39, REQS_GITHUB_LOG_38, REQS_GITHUB_LOG_39, EGO_GITHUB_ROOT
+    EGO_GITHUB_LOG, ME_GITHUB_LOG_39, REQS_GITHUB_LOG_39, EGO_GITHUB_ROOT
 from utils import read_object_from_file
 
 
@@ -67,12 +67,10 @@ def convert_id_to_name(log, metadata):
 
 def generate_github_overview():
     ego_log = TestResults("PyEGo", "PyEGo", dataset="github", log_path=EGO_GITHUB_LOG)
-    me_log_38 = TestResults("DockerizeMe-3.8", "DockerizeMe", dataset="github", log_path=ME_GITHUB_LOG_38)
     me_log_39 = TestResults("DockerizeMe-3.9", "DockerizeMe", dataset="github", log_path=ME_GITHUB_LOG_39)
-    reqs_log_38 = TestResults("pipreqs-3.8", "PyEGo", dataset="github", log_path=REQS_GITHUB_LOG_38)
     reqs_log_39 = TestResults("pipreqs-3.9", "PyEGo", dataset="github", log_path=REQS_GITHUB_LOG_39)
 
-    logs = [ego_log, me_log_38, me_log_39, reqs_log_38, reqs_log_39]
+    logs = [ego_log, me_log_39, reqs_log_39]
     meta_path = os.path.join(EGO_GITHUB_ROOT, "metadata.json")
     metadata = read_object_from_file(meta_path)
 

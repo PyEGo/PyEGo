@@ -50,7 +50,7 @@ def find_and_create_dirs(dir_name):
     :param dir_name: the docker_name of dir
     :return: the docker_name of dir
     """
-    if os.path.exists(dir_name) is False and dir_name != '':
+    if os.path.exists(dir_name) is False:
         os.makedirs(dir_name)
     return dir_name
 
@@ -58,11 +58,20 @@ def find_and_create_dirs(dir_name):
 def is_valid_pkg_root(pkg_root):
     if not os.path.exists(pkg_root):
         return False
+    # all_version_path = os.path.join(pkg_root, config.PY_PACKAGE_ALL_URL_INDEX_NAME)
+    # if not os.path.exists(all_version_path):
+    #     return False
+    # filtered_version_path = os.path.join(pkg_root, config.KG_PY_PACKAGE_VERSION_INDEX_NAME)
+    # if not os.path.exists(filtered_version_path):
+    #     return False
     return True
 
 
 def compare_version(v1, v2):
-    result = compareVersion(v1, v2)
+    try:
+        result = compareVersion(v1, v2)
+    except ValueError:
+        return 1
     if "equal" in result:
         return 0
     if "greater" in result:

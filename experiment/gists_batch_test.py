@@ -104,7 +104,7 @@ def batch_test_thread(paths, proc_id=0, queue=None,
                         message = "ImportError"
                     else:
                         succ_count += 1
-                        message = "ImportError_but_Alerted"
+                        message = "ImportError but Alerted"
             except TimeoutError:
                 message = "Success"  # timeout without import error
         log_level = logging.info if message in ["Success", "ImportError but Alerted"] else logging.warning

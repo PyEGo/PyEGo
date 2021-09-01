@@ -104,15 +104,18 @@ def run_image_strict(image_name, container_name):
     except Exception as e:
         msg = e.args[0] if len(e.args) > 0 else ""
         msg = str(msg)
-        ret = 1
+        if msg is None or msg == "":
+            ret = 0
+        else:
+            ret = 1
     finally:
         try:
             container = client.containers.get(container_name)
             container.stop()
             container.remove(force=True)
+            client.images.remove(image_name, force=True)
         except Exception:
             pass
-        client.images.remove(image_name, force=True)
     return ret, msg
 
 

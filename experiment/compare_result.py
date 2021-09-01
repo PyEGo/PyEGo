@@ -51,7 +51,8 @@ class TestResults:
                 continue
             other_status = other.results[id]
             status = self.results[id]
-            if status != other_status:
+            # if status != other_status:
+            if status == "success" and other_status != "success" or status != "success" and other_status == "success":
                 msg.append("{}: {} -- {}".format(id, status, other_status))
         return msg
 

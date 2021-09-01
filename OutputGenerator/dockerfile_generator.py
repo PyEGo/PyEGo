@@ -92,7 +92,7 @@ installed = ["adduser",
              "tzdata",
              "util-linux",
              "zlib1g"
-             ]
+]
 
 
 def choose_base_image(pip_pkgvers, pyver):
@@ -100,7 +100,7 @@ def choose_base_image(pip_pkgvers, pyver):
     if "apt" in methods:
         base_image = "debian:10"
     else:
-        base_image = "python:{}".format(pyver)
+        base_image = "python:{}-buster".format(pyver)
     return base_image
 
 
@@ -163,7 +163,7 @@ def generate_dockerfile(pip_pkgvers, sys_pkgvers, filepath,
     from_line = "FROM {}".format(base_image)
     lines.append(from_line)
     # adapt apt-get update error
-    lines.append("RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list")
+    # lines.append("RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list")
     lines.append("RUN apt-get clean")
     # if choose debian as base image, install python manually
     py_install_lines = generate_py_install_lines(base_image, pyver)

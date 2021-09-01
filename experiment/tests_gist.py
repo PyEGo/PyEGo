@@ -43,14 +43,14 @@ def test_time_ego():
     # test time cost of PyEGo on hard-gists(first 100 gists) dataset
     root = EGO_GISTS_ROOT
     folders = sorted(os.listdir(root))
-    count = 100
+    # count = 100
     start = datetime.now()
-    for folder in tqdm(folders[:count]):
+    for folder in tqdm(folders):
         snippet_path = os.path.join(root, folder, "snippet.py")
         solve_import(snippet_path, add_path="snippet.py", cmd_lines=["CMD python snippet.py"])
     end = datetime.now()
     cost = end-start
-    print("total: {}s, avg: {}s/item".format(cost.seconds, 1.*cost.seconds/100))
+    print("total: {}s, avg: {}s/item".format(cost.seconds, 1.*cost.seconds/len(folders)))
 
 
 def test_time_me():
